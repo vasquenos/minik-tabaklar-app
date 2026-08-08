@@ -1,0 +1,31 @@
+{
+  "name": "Minik Tabaklar",
+  "short_name": "Minik Tabaklar",
+  "description": "Tariflerini kaydet, porsiyonla, adım adım pişir. Keşfet, arkadaşlarınla tariflerini paylaş.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#faf8f5",
+  "theme_color": "#ef5f8e",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

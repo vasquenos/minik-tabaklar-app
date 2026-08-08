@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Supabase CLI'nin ürettiği geçici dosyalar (kaynak kod değil):
+    "supabase/.temp/**",
   ]),
 ]);
 
