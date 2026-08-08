@@ -43,18 +43,18 @@ export async function sendMessage(
     return { error: "Mesaj en fazla 2000 karakter olabilir." };
   }
 
-  // Alıcının mesaj politikası: 'friends' ise arkadaşlık zorunlu.
+  // Alıcının mesaj politikası: 'friends' ise (ya da profili yoksa, varsayılan
+  // 'friends' sayılır) arkadaşlık zorunlu.
   const { data: recipientProfile } = await supabase
     .from("profiles")
     .select("message_policy")
     .eq("user_id", recipientId)
     .maybeSingle();
 
-  if (!recipientProfile) {
-    return { error: "Alıcı bulunamadı." };
-  }
+  const requiresFriendship =
+    !recipientProfile || recipientProfile.message_policy === "friends";
 
-  if (recipientProfile.message_policy === "friends") {
+  if (requiresFriendship) {
     const { data: friendship } = await supabase
       .from("friendships")
       .select("id")

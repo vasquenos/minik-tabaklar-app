@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { getUserProfile } from "@/lib/profiles";
 import { getFavoriteRecipeIds } from "@/lib/favorites";
 import { RecipeCard } from "@/components/recipe/recipe-card";
 import { CategoryChips } from "@/components/recipe/category-chips";
@@ -17,15 +18,6 @@ function greeting() {
   if (hour < 12) return "Günaydın";
   if (hour < 18) return "İyi günler";
   return "İyi akşamlar";
-}
-
-function firstName(email: string) {
-  return (email.split("@")[0] ?? "chef")
-    .replace(/[._\d]+/g, " ")
-    .trim()
-    .split(" ")
-    .map((part) => part.charAt(0).toLocaleUpperCase("tr") + part.slice(1))
-    .join(" ");
 }
 
 export default async function RecipesPage({
@@ -59,7 +51,10 @@ export default async function RecipesPage({
 
   const { data: recipes } = await query;
 
-  const favoriteIds = await getFavoriteRecipeIds(user.id);
+  const [favoriteIds, profile] = await Promise.all([
+    getFavoriteRecipeIds(user.id),
+    getUserProfile(user.id),
+  ]);
 
   let filtered = recipes ?? [];
   if (q) {
@@ -79,7 +74,7 @@ export default async function RecipesPage({
     ),
   ];
 
-  const name = firstName(user.email ?? "");
+  const name = profile.first_name || profile.initial || "Şef";
 
   return (
     <div className="flex flex-col gap-5">

@@ -9,6 +9,7 @@ import {
   CompassIcon,
   FriendsIcon,
   HeartIcon,
+  MessageIcon,
   PlusIcon,
   UserIcon,
 } from "@/components/ui/icons";
@@ -19,10 +20,11 @@ type NavItem = { href: string; label: string; icon: NavIcon };
 const leftItems: NavItem[] = [
   { href: "/recipes", label: "Ana Sayfa", icon: ChefHatIcon },
   { href: "/discover", label: "Keşfet", icon: CompassIcon },
+  { href: "/favorites", label: "Favoriler", icon: HeartIcon },
 ];
 
 const rightItems: NavItem[] = [
-  { href: "/favorites", label: "Favoriler", icon: HeartIcon },
+  { href: "/messages", label: "Mesajlar", icon: MessageIcon },
   { href: "/friends", label: "Arkadaşlar", icon: FriendsIcon },
   { href: "/profile", label: "Profil", icon: UserIcon },
 ];
@@ -32,6 +34,8 @@ const matchRules: Record<string, (pathname: string) => boolean> = {
     pathname === "/recipes" || pathname.startsWith("/recipes/"),
   "/discover": (pathname) => pathname === "/discover",
   "/favorites": (pathname) => pathname === "/favorites",
+  "/messages": (pathname) =>
+    pathname === "/messages" || pathname.startsWith("/messages/"),
   "/friends": (pathname) =>
     pathname === "/friends" || pathname.startsWith("/friends/"),
   "/profile": (pathname) => pathname === "/profile",

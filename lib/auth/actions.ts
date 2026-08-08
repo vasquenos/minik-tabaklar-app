@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 
 export type AuthState =
@@ -58,11 +59,17 @@ export async function signUp(
   }
 
   const supabase = await createClient();
+  const headerStore = await headers();
+  const proto = headerStore.get("x-forwarded-proto") ?? "http";
+  const host = headerStore.get("x-forwarded-host") ?? headerStore.get("host") ?? "localhost:3000";
+  const origin = `${proto}://${host}`;
+
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
       data: { first_name: firstName, last_name: lastName },
+      emailRedirectTo: `${origin}/auth/callback`,
     },
   });
 
@@ -70,18 +77,8 @@ export async function signUp(
     return { error: error.message };
   }
 
-  // Yeni kullanıcının profili otomatik oluşturulur (ismi arayüzde gösterir).
-  if (data.user) {
-    await supabase
-      .from("profiles")
-      .insert({
-        user_id: data.user.id,
-        first_name: firstName,
-        last_name: lastName,
-      })
-      .select("user_id")
-      .maybeSingle();
-  }
+  // Profil satırı DB'deki trigger ile oluşturulur (auth.users insert).
+  // E-posta onayı açıkken oturum henüz yok; RLS burada insert'e izin vermez.
 
   if (data.session) {
     // Yerelde e-posta onayı kapalı; oturum hemen açılır.

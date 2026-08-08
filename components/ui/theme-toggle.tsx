@@ -1,19 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useSyncExternalStore } from "react";
 import { MoonIcon, SunIcon } from "@/components/ui/icons";
 import { cn } from "@/lib/utils";
 
+// Tema DOM sınıfıyla senkronize bir "dış kaynak" gibi okunur; böylece
+// SSR/hydration farkı ya da bayat state kaynaklı ilk tıklama hataları olmaz.
+const getSnapshot = () =>
+  typeof document !== "undefined" &&
+  document.documentElement.classList.contains("dark");
+
+const subscribe = (callback: () => void) => {
+  window.addEventListener("themechange", callback);
+  return () => window.removeEventListener("themechange", callback);
+};
+
 export function ThemeToggle({ className }: { className?: string }) {
-  const [dark, setDark] = useState(() =>
-    typeof document !== "undefined"
-      ? document.documentElement.classList.contains("dark")
-      : false
-  );
+  const dark = useSyncExternalStore(subscribe, getSnapshot, () => false);
 
   const toggle = () => {
-    const next = !dark;
-    setDark(next);
+    const next = !getSnapshot();
     const root = document.documentElement;
     root.classList.toggle("dark", next);
     try {
@@ -21,6 +27,7 @@ export function ThemeToggle({ className }: { className?: string }) {
     } catch {
       // localStorage yoksa sessizce geç.
     }
+    window.dispatchEvent(new Event("themechange"));
   };
 
   return (
