@@ -38,7 +38,7 @@ export default async function DashboardLayout({
           aria-label="Ana sayfa"
           className="flex items-center gap-2"
         >
-          <Brand className="h-9 w-auto" />
+          <Brand />
         </Link>
 
         <div className="flex items-center gap-1.5">

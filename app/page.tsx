@@ -51,7 +51,7 @@ export default function Home() {
           <span className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-rose to-blush shadow-glow animate-float text-3xl">
             🍽️
           </span>
-          <Brand className="h-10 w-auto" wordmarkClassName="text-2xl" />
+          <Brand wordmarkClassName="text-2xl" />
         </div>
 
         <div className="flex flex-col gap-3">

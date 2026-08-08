@@ -52,7 +52,7 @@ export function BottomNav() {
         href={item.href}
         aria-current={active ? "page" : undefined}
         className={cn(
-          "relative flex h-12 flex-1 flex-col items-center justify-center gap-0.5 rounded-full transition-colors",
+          "relative flex h-12 flex-1 items-center justify-center rounded-full transition-colors",
           active && "bg-rose/35 text-rose-deep"
         )}
       >
@@ -66,14 +66,6 @@ export function BottomNav() {
             active ? "text-rose-deep" : "text-plum-faint"
           )}
         />
-        <span
-          className={cn(
-            "relative text-[10px] font-semibold",
-            active ? "text-rose-deep" : "text-plum-faint"
-          )}
-        >
-          {item.label}
-        </span>
       </Link>
     );
   };

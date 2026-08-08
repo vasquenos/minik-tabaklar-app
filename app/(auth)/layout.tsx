@@ -20,10 +20,7 @@ export default function AuthLayout({
       <div className="card relative w-full max-w-sm p-7 sm:p-8">
         <div className="mb-6 flex flex-col items-center gap-2">
           <Link href="/" className="flex h-14 items-center">
-            <Brand
-              className="h-11 w-auto"
-              wordmarkClassName="text-xl"
-            />
+            <Brand wordmarkClassName="text-xl" />
           </Link>
           <p className="text-center text-xs text-plum-faint">
             Tariflerini kaydet, porsiyonla, adım adım pişir ✨
